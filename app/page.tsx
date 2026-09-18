@@ -14,7 +14,13 @@ import {
   Database,
   Terminal,
   Globe,
-  ArrowRight
+  ArrowRight,
+  Play,
+  Square,
+  Cpu,
+  ShieldCheck,
+  Activity,
+  Check
 } from 'lucide-react'
 
 // CSS-based scroll reveal hook
@@ -43,25 +49,123 @@ function useScrollReveal() {
   return { ref, isVisible }
 }
 
-// Animated Waveform Component
-const WAVEFORM_HEIGHTS = [24, 38, 52, 32, 60, 42, 28, 48, 64, 36, 50, 26];
-const WAVEFORM_DELAYS = [0, 0.1, 0.2, 0.15, 0.3, 0.05, 0.25, 0.12, 0.18, 0.08, 0.22, 0.14];
-const WAVEFORM_DURATIONS = [1.1, 0.9, 1.2, 0.85, 1.0, 1.15, 0.95, 1.05, 1.25, 0.9, 1.1, 0.8];
+// Interactive Voice Agent Simulator
+const SIM_WAVEFORM_HEIGHTS = [16, 28, 44, 26, 52, 36, 22, 40, 56, 30, 42, 20];
+const SIM_WAVEFORM_DELAYS = [0, 0.1, 0.2, 0.15, 0.3, 0.05, 0.25, 0.12, 0.18, 0.08, 0.22, 0.14];
+const SIM_WAVEFORM_DURATIONS = [1.1, 0.9, 1.2, 0.85, 1.0, 1.15, 0.95, 1.05, 1.25, 0.9, 1.1, 0.8];
 
-function AnimatedWaveform() {
+function VoiceAgentPreview() {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [step, setStep] = useState(0)
+
+  const dialogue = [
+    { speaker: 'AI Recruiter', text: '“Tell me about how you handled state management in your last Next.js project.”', time: '0:03' },
+    { speaker: 'Candidate (You)', text: '“I leveraged Server Actions with optimistic UI updates and Firestore real-time listeners…”', time: '0:07' },
+    { speaker: 'ReadyRole Score', text: '“Architecture: 94/100 • Communication: 91/100 — Clear technical framing.”', time: '0:10' }
+  ]
+
+  useEffect(() => {
+    let timer: any
+    if (isPlaying) {
+      timer = setInterval(() => {
+        setStep((prev) => (prev + 1) % dialogue.length)
+      }, 3500)
+    } else {
+      setStep(0)
+    }
+    return () => clearInterval(timer)
+  }, [isPlaying])
+
   return (
-    <div className="flex items-center justify-center gap-1.5 h-32">
-      {WAVEFORM_HEIGHTS.map((h, i) => (
-        <div
-          key={i}
-          className="w-1.5 bg-accent rounded-full animate-pulse"
-          style={{
-            height: `${h}px`,
-            animationDelay: `${WAVEFORM_DELAYS[i]}s`,
-            animationDuration: `${WAVEFORM_DURATIONS[i]}s`,
-          }}
-        />
-      ))}
+    <div className="relative bg-surface border border-border rounded-2xl p-6 glow overflow-hidden">
+      {/* Top Header */}
+      <div className="flex items-center justify-between pb-4 mb-4 border-b border-border/80">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-500/80" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+          <div className="w-3 h-3 rounded-full bg-green-500/80" />
+          <span className="text-xs text-muted font-mono ml-2">ReadyRole Live Voice Session</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={`inline-block w-2 h-2 rounded-full ${isPlaying ? 'bg-emerald-400 animate-ping' : 'bg-muted'}`} />
+          <span className="text-xs font-mono text-muted">{isPlaying ? 'LIVE STREAM' : 'STANDBY'}</span>
+        </div>
+      </div>
+
+      {/* Waveform / Visualizer */}
+      <div className="bg-background/80 border border-border rounded-xl p-4 mb-4">
+        <div className="flex items-center justify-between mb-3 text-xs text-muted">
+          <div className="flex items-center gap-1.5 text-accent">
+            <Activity size={14} className={isPlaying ? 'animate-pulse' : ''} />
+            <span className="font-mono">{isPlaying ? 'Vapi Audio Stream (24kHz)' : 'Interactive Voice Sandbox'}</span>
+          </div>
+          <span className="font-mono text-[11px] bg-surface px-2 py-0.5 rounded border border-border">Latency: ~380ms</span>
+        </div>
+        
+        {/* Dynamic audio waves */}
+        <div className="flex items-center justify-center gap-1.5 h-20">
+          {SIM_WAVEFORM_HEIGHTS.map((h, i) => (
+            <div
+              key={i}
+              className={`w-1.5 rounded-full transition-all duration-300 ${
+                isPlaying 
+                  ? 'bg-accent animate-pulse' 
+                  : 'bg-border'
+              }`}
+              style={{
+                height: isPlaying ? `${h}px` : '10px',
+                animationDelay: `${SIM_WAVEFORM_DELAYS[i]}s`,
+                animationDuration: `${SIM_WAVEFORM_DURATIONS[i]}s`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Simulated Live Dialogue box */}
+      <div className="bg-surface border border-border/70 rounded-xl p-4 mb-5 min-h-[95px] flex flex-col justify-center">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-xs font-semibold text-accent flex items-center gap-1">
+            <Mic size={12} />
+            {dialogue[step].speaker}
+          </span>
+          <span className="text-[10px] font-mono text-muted">{isPlaying ? dialogue[step].time : 'Click below to demo'}</span>
+        </div>
+        <p className="text-sm text-white/90 leading-relaxed font-sans italic">
+          {isPlaying ? dialogue[step].text : '“Click Test Live Simulation to experience real-time AI interview interaction with dynamic question flow.”'}
+        </p>
+      </div>
+
+      {/* Action Controls */}
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-xs transition-all ${
+            isPlaying 
+              ? 'bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30' 
+              : 'bg-accent text-background hover:bg-accent-dim font-semibold glow'
+          }`}
+        >
+          {isPlaying ? (
+            <>
+              <Square size={14} /> Stop Simulation
+            </>
+          ) : (
+            <>
+              <Play size={14} fill="currentColor" /> Test Live Simulation
+            </>
+          )}
+        </button>
+        <a
+          href="https://interview-agent-virid-seven.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 py-2.5 px-3 bg-surface border border-border text-muted hover:text-white rounded-lg text-xs transition-colors"
+        >
+          <ExternalLink size={13} />
+          Full App
+        </a>
+      </div>
     </div>
   )
 }
@@ -218,6 +322,28 @@ export default function Home() {
                 ))}
               </div>
 
+              {/* Architecture Decisions Box */}
+              <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
+                <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
+                  <Cpu size={16} className="text-accent" />
+                  <span>Key Architecture Decisions</span>
+                </div>
+                <div className="space-y-2.5 text-xs text-muted leading-relaxed">
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Sub-500ms Voice Pipeline:</strong> Integrated Vapi WebSockets directly to enable natural interruptions and instant response times.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Structured Gemini AI Evaluation:</strong> Used Vercel AI SDK with strict Zod schema validation to guarantee 100% structured 5-category scoring.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Secure Server-Side Auth:</strong> Combined Firebase Client with Admin SDK on Next.js Server Actions to protect interview data and API tokens.</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Tech stack pills */}
               <div className="flex flex-wrap gap-2 mb-8">
                 {['Next.js', 'TypeScript', 'Firebase', 'Vapi', 'Gemini AI', 'Vercel AI SDK', 'Zod'].map((tech) => (
@@ -250,26 +376,11 @@ export default function Home() {
               </div>
             </Reveal>
 
-            {/* Project preview card with animated waveform */}
+            {/* Project preview card with interactive simulator */}
             <Reveal delay={200}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
-                <div className="relative bg-surface border border-border rounded-2xl p-6 glow">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="h-4 bg-border rounded w-3/4" />
-                    <div className="h-4 bg-border rounded w-1/2" />
-                    <div className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-lg mt-4 border border-accent/20 overflow-hidden">
-                      <AnimatedWaveform />
-                    </div>
-                    <div className="h-4 bg-border rounded w-5/6" />
-                    <div className="h-4 bg-border rounded w-2/3" />
-                  </div>
-                </div>
+                <VoiceAgentPreview />
               </div>
             </Reveal>
           </div>
@@ -291,42 +402,64 @@ export default function Home() {
                 title: 'Fitness Tracker',
                 desc: 'Full MERN stack fitness application with responsive UI and 10+ RESTful API endpoints. Bachelor\'s thesis project.',
                 stack: ['MongoDB', 'Express', 'React', 'Node.js'],
-                github: 'https://github.com/ucoi',
+                github: 'https://github.com/ucoi/THESIS',
+                demo: 'https://thesis-rust.vercel.app/',
               },
               {
                 title: 'NileFlix',
                 desc: 'Netflix-style streaming UI built with React. 4-person team project with Figma-to-code implementation.',
                 stack: ['React', 'CSS', 'Figma'],
-                github: 'https://github.com/ucoi',
+                github: 'https://github.com/ucoi/NileFlix-FrontEnd',
+                demo: null,
               },
               {
                 title: 'Weather App',
                 desc: 'Weather forecasting application with public API integration. Migrated from JavaScript to TypeScript.',
                 stack: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
                 github: 'https://github.com/ucoi/weatherApp',
+                demo: 'https://weather-app-bay-six-92.vercel.app/',
               },
             ].map((project, i) => (
               <Reveal key={project.title} delay={i * 100}>
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block p-6 bg-background border border-border rounded-xl hover:border-accent/30 transition-all duration-300"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <Code2 size={24} className="text-accent" />
-                    <ExternalLink size={16} className="text-muted group-hover:text-accent transition-colors" />
+                <div className="flex flex-col justify-between h-full p-6 bg-background border border-border rounded-xl hover:border-accent/30 transition-all duration-300">
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <Code2 size={24} className="text-accent" />
+                    </div>
+                    <h4 className="text-lg font-semibold mb-2">{project.title}</h4>
+                    <p className="text-sm text-muted mb-4 leading-relaxed">{project.desc}</p>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {project.stack.map((tech) => (
+                        <span key={tech} className="text-xs px-2 py-1 bg-surface border border-border rounded text-muted">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <h4 className="text-lg font-semibold mb-2">{project.title}</h4>
-                  <p className="text-sm text-muted mb-4 leading-relaxed">{project.desc}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.stack.map((tech) => (
-                      <span key={tech} className="text-xs px-2 py-1 bg-surface border border-border rounded text-muted">
-                        {tech}
-                      </span>
-                    ))}
+                  <div className="flex items-center gap-3 pt-4 border-t border-border">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-white transition-colors"
+                    >
+                      <Github size={14} />
+                      Code
+                    </a>
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent-dim transition-colors ml-auto"
+                      >
+                        <Globe size={14} />
+                        Live Demo
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
                   </div>
-                </a>
+                </div>
               </Reveal>
             ))}
           </div>
