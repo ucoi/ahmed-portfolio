@@ -14,21 +14,21 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'Ahmed Hisham | Full-Stack Developer',
-  description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI integration. Building intelligent web applications with voice AI and modern web technologies.',
-  keywords: ['Full-Stack Developer', 'React', 'Next.js', 'TypeScript', 'AI Integration', 'Voice AI', 'Vapi', 'Firebase'],
+  description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI-integrated web applications.',
+  keywords: ['Full-Stack Developer', 'React', 'Next.js', 'TypeScript', 'AI Integration', 'Firebase'],
   authors: [{ name: 'Ahmed Hisham' }],
   creator: 'Ahmed Hisham',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     title: 'Ahmed Hisham | Full-Stack Developer',
-    description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI integration.',
+    description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI-integrated web applications.',
     siteName: 'Ahmed Hisham Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ahmed Hisham | Full-Stack Developer',
-    description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI integration.',
+    description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI-integrated web applications.',
   },
 }
 

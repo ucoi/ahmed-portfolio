@@ -6,7 +6,6 @@ import {
   Linkedin, 
   Mail, 
   ExternalLink, 
-  ChevronDown,
   Code2,
   Sparkles,
   Mic,
@@ -15,15 +14,12 @@ import {
   Terminal,
   Globe,
   ArrowRight,
-  Play,
-  Square,
   Cpu,
-  ShieldCheck,
-  Activity,
-  Check
+  Check,
+  Star,
+  CalendarDays
 } from 'lucide-react'
 
-// CSS-based scroll reveal hook
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -49,128 +45,125 @@ function useScrollReveal() {
   return { ref, isVisible }
 }
 
-// Interactive Voice Agent Simulator
-const SIM_WAVEFORM_HEIGHTS = [16, 28, 44, 26, 52, 36, 22, 40, 56, 30, 42, 20];
-const SIM_WAVEFORM_DELAYS = [0, 0.1, 0.2, 0.15, 0.3, 0.05, 0.25, 0.12, 0.18, 0.08, 0.22, 0.14];
-const SIM_WAVEFORM_DURATIONS = [1.1, 0.9, 1.2, 0.85, 1.0, 1.15, 0.95, 1.05, 1.25, 0.9, 1.1, 0.8];
-
-function VoiceAgentPreview() {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [step, setStep] = useState(0)
-
-  const dialogue = [
-    { speaker: 'AI Recruiter', text: '“Tell me about how you handled state management in your last Next.js project.”', time: '0:03' },
-    { speaker: 'Candidate (You)', text: '“I leveraged Server Actions with optimistic UI updates and Firestore real-time listeners…”', time: '0:07' },
-    { speaker: 'ReadyRole Score', text: '“Architecture: 94/100 • Communication: 91/100 — Clear technical framing.”', time: '0:10' }
+function ReadyRoleExplorer() {
+  const breakdown = [
+    {
+      title: 'Communication Skills',
+      score: 30,
+      feedback: 'The candidate interrupted the interviewer multiple times during the introduction and demonstrated a lack of basic interview etiquette.',
+    },
+    {
+      title: 'Technical Knowledge',
+      score: 0,
+      feedback: 'No technical questions were answered, and the candidate did not demonstrate knowledge of the required tech stack.',
+    },
+    {
+      title: 'Problem-Solving',
+      score: 0,
+      feedback: 'The candidate did not participate in problem-solving scenarios or demonstrate analytical thinking.',
+    },
+    {
+      title: 'Cultural & Role Fit',
+      score: 20,
+      feedback: 'The candidate was unprepared and unaware of the role and company context before the interview started.',
+    },
+    {
+      title: 'Confidence & Clarity',
+      score: 40,
+      feedback: 'The candidate asked direct questions clearly, but asking basic details about the position showed a lack of preparation.',
+    },
   ]
-
-  useEffect(() => {
-    let timer: any
-    if (isPlaying) {
-      timer = setInterval(() => {
-        setStep((prev) => (prev + 1) % dialogue.length)
-      }, 3500)
-    } else {
-      setStep(0)
-    }
-    return () => clearInterval(timer)
-  }, [isPlaying])
 
   return (
     <div className="relative bg-surface border border-border rounded-2xl p-6 glow overflow-hidden">
-      {/* Top Header */}
-      <div className="flex items-center justify-between pb-4 mb-4 border-b border-border/80">
+      <div className="flex items-center justify-between pb-4 mb-6 border-b border-border/80">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-red-500/80" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
           <div className="w-3 h-3 rounded-full bg-green-500/80" />
-          <span className="text-xs text-muted font-mono ml-2">ReadyRole Live Voice Session</span>
+          <span className="text-xs text-muted font-mono ml-2">ReadyRole Feedback Report</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className={`inline-block w-2 h-2 rounded-full ${isPlaying ? 'bg-emerald-400 animate-ping' : 'bg-muted'}`} />
-          <span className="text-xs font-mono text-muted">{isPlaying ? 'LIVE STREAM' : 'STANDBY'}</span>
-        </div>
+        <span className="text-xs font-mono text-accent">WEBSITE EXAMPLE</span>
       </div>
 
-      {/* Waveform / Visualizer */}
-      <div className="bg-background/80 border border-border rounded-xl p-4 mb-4">
-        <div className="flex items-center justify-between mb-3 text-xs text-muted">
-          <div className="flex items-center gap-1.5 text-accent">
-            <Activity size={14} className={isPlaying ? 'animate-pulse' : ''} />
-            <span className="font-mono">{isPlaying ? 'Vapi Audio Stream (24kHz)' : 'Interactive Voice Sandbox'}</span>
-          </div>
-          <span className="font-mono text-[11px] bg-surface px-2 py-0.5 rounded border border-border">Latency: ~380ms</span>
-        </div>
-        
-        {/* Dynamic audio waves */}
-        <div className="flex items-center justify-center gap-1.5 h-20">
-          {SIM_WAVEFORM_HEIGHTS.map((h, i) => (
-            <div
-              key={i}
-              className={`w-1.5 rounded-full transition-all duration-300 ${
-                isPlaying 
-                  ? 'bg-accent animate-pulse' 
-                  : 'bg-border'
-              }`}
-              style={{
-                height: isPlaying ? `${h}px` : '10px',
-                animationDelay: `${SIM_WAVEFORM_DELAYS[i]}s`,
-                animationDuration: `${SIM_WAVEFORM_DURATIONS[i]}s`,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Simulated Live Dialogue box */}
-      <div className="bg-surface border border-border/70 rounded-xl p-4 mb-5 min-h-[95px] flex flex-col justify-center">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs font-semibold text-accent flex items-center gap-1">
-            <Mic size={12} />
-            {dialogue[step].speaker}
-          </span>
-          <span className="text-[10px] font-mono text-muted">{isPlaying ? dialogue[step].time : 'Click below to demo'}</span>
-        </div>
-        <p className="text-sm text-white/90 leading-relaxed font-sans italic">
-          {isPlaying ? dialogue[step].text : '“Click Test Live Simulation to experience real-time AI interview interaction with dynamic question flow.”'}
+      <div className="mb-6">
+        <h4 className="text-xl font-semibold text-white">Feedback on the Web Developer Interview</h4>
+        <p className="mt-2 text-xs text-muted">
+          Example feedback report from the{' '}
+          <a
+            href="https://interview-agent-virid-seven.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:text-accent-dim transition-colors"
+          >
+            live ReadyRole website
+          </a>
+          .
         </p>
+        <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-muted">
+          <span className="inline-flex items-center gap-1.5 text-accent">
+            <Star size={14} fill="currentColor" />
+            Overall Impression: <strong className="text-white">18/100</strong>
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <CalendarDays size={14} />
+            Sep 12, 2026 · 5:11 PM
+          </span>
+        </div>
       </div>
 
-      {/* Action Controls */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-xs transition-all ${
-            isPlaying 
-              ? 'bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30' 
-              : 'bg-accent text-background hover:bg-accent-dim font-semibold glow'
-          }`}
-        >
-          {isPlaying ? (
-            <>
-              <Square size={14} /> Stop Simulation
-            </>
-          ) : (
-            <>
-              <Play size={14} fill="currentColor" /> Test Live Simulation
-            </>
-          )}
-        </button>
-        <a
-          href="https://interview-agent-virid-seven.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 py-2.5 px-3 bg-surface border border-border text-muted hover:text-white rounded-lg text-xs transition-colors"
-        >
-          <ExternalLink size={13} />
-          Full App
-        </a>
+      <div className="space-y-5 max-h-[520px] overflow-y-auto pr-2">
+        <section>
+          <h5 className="text-sm font-semibold text-accent mb-2">Final Assessment</h5>
+          <p className="text-xs leading-relaxed text-muted">
+            The candidate showed a critical lack of preparation by failing to know what position and technology stack the interview pertained to. Interrupting the interviewer during the opening remarks further negatively impacted their professional impression. No technical capabilities or problem-solving skills were demonstrated.
+          </p>
+        </section>
+
+        <section>
+          <h5 className="text-sm font-semibold text-accent mb-3">Breakdown of Evaluation</h5>
+          <div className="space-y-4">
+            {breakdown.map((item, index) => (
+              <div key={item.title} className="border-l border-border pl-3">
+                <div className="flex items-center justify-between gap-3 mb-1">
+                  <span className="text-xs font-medium text-white">{index + 1}. {item.title}</span>
+                  <span className="text-xs font-mono text-accent">{item.score}/100</span>
+                </div>
+                <p className="text-xs leading-relaxed text-muted">{item.feedback}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h5 className="text-sm font-semibold text-accent mb-2">Strengths</h5>
+          <ul className="list-disc pl-5 text-xs leading-relaxed text-muted">
+            <li>Asked direct questions to clarify the interview topic and technology stack.</li>
+          </ul>
+        </section>
+        <section>
+          <h5 className="text-sm font-semibold text-accent mb-2">Areas for Improvement</h5>
+          <ul className="list-disc pl-5 space-y-1 text-xs leading-relaxed text-muted">
+            <li>Research the job description, company, and required tech stack before attending.</li>
+            <li>Allow the interviewer to finish their introduction before asking questions.</li>
+            <li>Demonstrate readiness and enthusiasm for the position being discussed.</li>
+          </ul>
+        </section>
+        <div className="flex flex-wrap gap-3 pt-1">
+          <a
+            href="https://interview-agent-virid-seven.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-medium text-accent hover:text-accent-dim transition-colors"
+          >
+            Back to Dashboard →
+          </a>
+        </div>
       </div>
     </div>
   )
 }
 
-// Scroll-reveal wrapper component
 function Reveal({ 
   children, 
   className = '', 
@@ -198,21 +191,47 @@ function Reveal({
 }
 
 export default function Home() {
+  const handleSmoothScroll = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const href = event.currentTarget.getAttribute('href')
+
+    if (!href || !href.startsWith('#')) {
+      return
+    }
+
+    const targetId = href.slice(1)
+    const target = document.getElementById(targetId)
+
+    if (!target) {
+      return
+    }
+
+    event.preventDefault()
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    window.history.pushState(null, '', href)
+  }
+
   return (
     <main className="min-h-screen">
-      {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <a 
             href="#"
+            onClick={handleSmoothScroll}
             className="text-xl font-bold gradient-text animate-fade-in"
           >
             AH
           </a>
           <div className="flex gap-8 items-center animate-fade-in">
-            <a href="#projects" className="text-muted hover:text-white transition-colors text-sm">Projects</a>
-            <a href="#stack" className="text-muted hover:text-white transition-colors text-sm">Stack</a>
-            <a href="#contact" className="text-muted hover:text-white transition-colors text-sm">Contact</a>
+            <a href="#projects" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Projects</a>
+            <a href="#stack" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Stack</a>
+            <a href="#contact" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Contact</a>
+            <a
+              href="/resume.pdf"
+              download="Ahmed_Hisham_CV.pdf"
+              className="text-muted hover:text-white transition-colors text-sm"
+            >
+              Resume
+            </a>
             <a 
               href="https://github.com/ucoi" 
               target="_blank" 
@@ -225,31 +244,25 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-6">
-        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent pointer-events-none" />
         
-        {/* Animated grid */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'linear-gradient(#22d3ee 1px, transparent 1px), linear-gradient(90deg, #22d3ee 1px, transparent 1px)',
           backgroundSize: '60px 60px'
         }} />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-border mb-8 animate-fade-in">
             <Sparkles size={14} className="text-accent" />
             <span className="text-sm text-muted">AI-Integrated Full-Stack Development</span>
           </div>
 
-          {/* Main headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-slide-up">
             I build intelligent<br />
             <span className="gradient-text">web applications</span>
           </h1>
 
-          {/* Subheadline */}
           <p className="text-xl md:text-2xl text-muted mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Full-Stack Developer specializing in{' '}
             <span className="text-white">React</span>,{' '}
@@ -259,10 +272,10 @@ export default function Home() {
             Creating voice-powered experiences and scalable applications.
           </p>
 
-          {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <a
               href="#projects"
+              onClick={handleSmoothScroll}
               className="group inline-flex items-center gap-2 px-8 py-4 bg-accent text-background font-semibold rounded-lg hover:bg-accent-dim transition-all duration-300 glow"
             >
               View My Work
@@ -270,21 +283,17 @@ export default function Home() {
             </a>
             <a
               href="#contact"
+              onClick={handleSmoothScroll}
               className="inline-flex items-center gap-2 px-8 py-4 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-all duration-300"
             >
               Get In Touch
             </a>
           </div>
 
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-            <ChevronDown size={24} className="text-muted" />
-          </div>
         </div>
       </section>
 
-      {/* Featured Project - ReadyRole */}
-      <section id="projects" className="py-32 px-6">
+      <section id="projects" className="py-32 px-6 scroll-mt-28">
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
@@ -304,7 +313,6 @@ export default function Home() {
                 Practice interviews, get instant feedback, and improve your communication skills.
               </p>
 
-              {/* Features */}
               <div className="grid sm:grid-cols-2 gap-4 mb-8">
                 {[
                   { icon: Mic, label: 'Live Voice Conversation', desc: 'Real-time AI interview via Vapi SDK' },
@@ -322,7 +330,6 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Architecture Decisions Box */}
               <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
                 <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
                   <Cpu size={16} className="text-accent" />
@@ -344,7 +351,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Tech stack pills */}
               <div className="flex flex-wrap gap-2 mb-8">
                 {['Next.js', 'TypeScript', 'Firebase', 'Vapi', 'Gemini AI', 'Vercel AI SDK', 'Zod'].map((tech) => (
                   <span key={tech} className="px-3 py-1 text-sm bg-surface border border-border rounded-full text-muted">
@@ -353,7 +359,6 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Links */}
               <div className="flex gap-4">
                 <a
                   href="https://interview-agent-virid-seven.vercel.app/"
@@ -376,18 +381,16 @@ export default function Home() {
               </div>
             </Reveal>
 
-            {/* Project preview card with interactive simulator */}
             <Reveal delay={200}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
-                <VoiceAgentPreview />
+                <ReadyRoleExplorer />
               </div>
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Other Projects */}
       <section className="py-24 px-6 bg-surface/50">
         <div className="max-w-6xl mx-auto">
           <Reveal>
@@ -466,8 +469,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tech Stack */}
-      <section id="stack" className="py-32 px-6">
+      <section id="stack" className="py-32 px-6 scroll-mt-28">
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <div className="text-center mb-12">
@@ -502,7 +504,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
       <section className="py-32 px-6 bg-surface/50">
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -510,12 +511,12 @@ export default function Home() {
               <h3 className="text-3xl font-bold mb-6">About Me</h3>
               <div className="space-y-4 text-muted leading-relaxed">
                 <p>
-                  I'm a Junior Full-Stack Developer and Computer Science Engineering graduate from the University of Debrecen, 
+                  I&apos;m a Junior Full-Stack Developer and Computer Science Engineering graduate from the University of Debrecen,
                   Hungary. Stipendium Hungaricum Scholar.
                 </p>
                 <p>
                   I specialize in building React and Next.js applications with modern backend technologies. 
-                  Recently, I've been focusing on AI integration — building applications that leverage voice AI, 
+                  Recently, I&apos;ve been focusing on AI integration — building applications that leverage voice AI,
                   LLMs, and intelligent automation.
                 </p>
                 <p>
@@ -558,13 +559,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-32 px-6">
+      <section id="contact" className="py-32 px-6 scroll-mt-28">
         <div className="max-w-3xl mx-auto text-center">
           <Reveal>
-            <h3 className="text-4xl font-bold mb-6">Let's Connect</h3>
+            <h3 className="text-4xl font-bold mb-6">Let&apos;s Connect</h3>
             <p className="text-xl text-muted mb-12 max-w-xl mx-auto">
-              Looking for a junior full-stack developer? I'm open to opportunities and interesting projects.
+              Looking for a junior full-stack developer? I&apos;m open to opportunities and interesting projects.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -598,7 +598,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-8 px-6 border-t border-border">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="text-sm text-muted">

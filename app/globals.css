@@ -19,6 +19,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -30,7 +31,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -48,7 +48,6 @@ body {
   background: var(--muted);
 }
 
-/* Gradient text utility */
 .gradient-text {
   background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%);
   -webkit-background-clip: text;
@@ -56,12 +55,10 @@ body {
   background-clip: text;
 }
 
-/* Glow effect */
 .glow {
   box-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
 }
 
-/* Animated underline */
 .animated-underline {
   position: relative;
 }
@@ -81,7 +78,6 @@ body {
   width: 100%;
 }
 
-/* CSS-only scroll reveal */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -93,7 +89,6 @@ body {
   transform: translateY(0);
 }
 
-/* Animated waveform */
 .waveform {
   display: flex;
   align-items: center;
