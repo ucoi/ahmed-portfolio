@@ -17,7 +17,11 @@ import {
   Cpu,
   Check,
   Star,
-  CalendarDays
+  CalendarDays,
+  GitPullRequest,
+  Shield,
+  FileSearch,
+  Lock
 } from 'lucide-react'
 
 function useScrollReveal() {
@@ -164,6 +168,119 @@ function ReadyRoleExplorer() {
   )
 }
 
+function CodeReviewExplorer() {
+  const findings = [
+    {
+      file: 'src/auth/session.ts',
+      title: 'Missing authorization check on session refresh',
+      severity: 'high',
+      category: 'security',
+      lines: '42–58',
+      snippet: 'const session = await refresh(token)\nreturn session // no role / owner check',
+    },
+    {
+      file: 'src/api/review.ts',
+      title: 'LLM JSON counts trusted without recomputation',
+      severity: 'medium',
+      category: 'correctness',
+      lines: '88–94',
+      snippet: 'return { findings, counts: model.counts }',
+    },
+    {
+      file: 'src/lib/extract.ts',
+      title: 'Git b/ prefix leaked into modified-file paths',
+      severity: 'low',
+      category: 'bug',
+      lines: '410–418',
+      snippet: 'stripPrefix(path, "a/") || stripPrefix(path, "b/")',
+    },
+  ]
+
+  const severityColor: Record<string, string> = {
+    high: 'text-red-400 bg-red-500/10 border-red-500/20',
+    medium: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+    low: 'text-accent bg-accent/10 border-accent/20',
+  }
+
+  return (
+    <div className="relative bg-surface border border-border rounded-2xl p-6 glow overflow-hidden">
+      <div className="flex items-center justify-between pb-4 mb-6 border-b border-border/80">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-500/80" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+          <div className="w-3 h-3 rounded-full bg-green-500/80" />
+          <span className="text-xs text-muted font-mono ml-2">AI Code Review · findings</span>
+        </div>
+        <span className="text-xs font-mono text-accent">WEBSITE EXAMPLE</span>
+      </div>
+
+      <div className="mb-6">
+        <h4 className="text-xl font-semibold text-white">Review of owner/repo#128</h4>
+        <p className="mt-2 text-xs text-muted">
+          Example findings from the{' '}
+          <a
+            href="https://ai-code-review-agent-ten.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:text-accent-dim transition-colors"
+          >
+            live review agent
+          </a>
+          .
+        </p>
+        <div className="flex flex-wrap items-center gap-3 mt-4 text-xs">
+          <span className="px-2 py-1 rounded-md bg-surface border border-border font-mono text-white">
+            3 findings
+          </span>
+          <span className="px-2 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 font-mono">
+            1 high
+          </span>
+          <span className="px-2 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 font-mono">
+            1 medium
+          </span>
+          <span className="px-2 py-1 rounded-md bg-accent/10 border border-accent/20 text-accent font-mono">
+            1 low
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2">
+        {findings.map((item) => (
+          <div key={item.title} className="border border-border rounded-xl p-4 bg-background/40">
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <div className="min-w-0">
+                <div className="text-xs font-mono text-muted truncate">{item.file}</div>
+                <div className="text-sm font-medium text-white mt-1">{item.title}</div>
+              </div>
+              <span className={`shrink-0 text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded border ${severityColor[item.severity]}`}>
+                {item.severity}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 mb-3 text-[11px] text-muted font-mono">
+              <span>{item.category}</span>
+              <span>·</span>
+              <span>L{item.lines}</span>
+            </div>
+            <pre className="text-[11px] leading-relaxed font-mono text-muted bg-background border border-border rounded-lg p-3 overflow-x-auto">
+              {item.snippet}
+            </pre>
+          </div>
+        ))}
+        <div className="flex flex-wrap gap-3 pt-1">
+          <a
+            href="https://ai-code-review-agent-ten.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-medium text-accent hover:text-accent-dim transition-colors"
+          >
+            Open live demo →
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Reveal({ 
   children, 
   className = '', 
@@ -226,11 +343,18 @@ export default function Home() {
             <a href="#stack" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Stack</a>
             <a href="#contact" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Contact</a>
             <a
-              href="/resume.pdf"
+              href="/cv.pdf"
               download="Ahmed_Hisham_CV.pdf"
               className="text-muted hover:text-white transition-colors text-sm"
             >
               Resume
+            </a>
+            <a
+              href="/cv.pdf"
+              download="Ahmed_Hisham_CV.pdf"
+              className="text-muted hover:text-white transition-colors text-sm"
+            >
+              CV
             </a>
             <a 
               href="https://github.com/ucoi" 
@@ -385,6 +509,105 @@ export default function Home() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
                 <ReadyRoleExplorer />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-32 px-6 scroll-mt-28 border-t border-border">
+        <div className="max-w-6xl mx-auto">
+          <Reveal>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
+              <span className="text-accent text-sm font-mono uppercase tracking-wider">Featured Project</span>
+              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
+            </div>
+          </Reveal>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center mt-12">
+            <Reveal delay={100}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                AI Code Review Agent
+              </h2>
+              <p className="text-xl text-muted mb-6 leading-relaxed">
+                Paste a GitHub PR URL and get a structured review: unified diffs are parsed into
+                hunks, sent to an LLM with prompt-injection defense, then validated with Zod
+                before anything reaches the UI.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: GitPullRequest, label: 'GitHub PR Diff Parsing', desc: 'Fetches unified diffs via GitHub REST API' },
+                  { icon: Shield, label: 'Injection-Safe Prompting', desc: 'Wraps diff content as untrusted data in delimiters' },
+                  { icon: FileSearch, label: 'Zod Validation + Repair', desc: 'Strict schema with one-pass JSON repair retry' },
+                  { icon: Lock, label: 'Secure Server-Side Keys', desc: 'LLM API key never reaches the client' },
+                ].map((feature, i) => (
+                  <div key={i} className="flex gap-3 p-4 bg-surface rounded-lg border border-border hover:border-accent/30 transition-colors">
+                    <feature.icon size={20} className="text-accent flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-medium text-sm">{feature.label}</div>
+                      <div className="text-xs text-muted">{feature.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
+                <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
+                  <Cpu size={16} className="text-accent" />
+                  <span>Pipeline Architecture</span>
+                </div>
+                <div className="space-y-2.5 text-xs text-muted leading-relaxed">
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Diff → Chunks:</strong> Parses unified diffs, skips lockfiles/minified/binary files, strips git a/ b/ prefixes correctly.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Prompt Injection Defense:</strong> Wraps diff in explicit delimiters and instructs the LLM to ignore embedded instructions in code.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Validated JSON Output:</strong> Results validated against Zod with one repair attempt; counts recomputed server-side, not trusted from the model.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2 mb-8">
+                {['Next.js 16', 'TypeScript', 'React', 'Tailwind', 'Zod', 'Vitest', 'GitHub API', 'OpenAI-compatible LLM API', 'Vercel'].map((tech) => (
+                  <span key={tech} className="px-3 py-1 text-sm bg-surface border border-border rounded-full text-muted">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex gap-4">
+                <a
+                  href="https://ai-code-review-agent-ten.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-background font-semibold rounded-lg hover:bg-accent-dim transition-all duration-300 glow"
+                >
+                  <Globe size={18} />
+                  Live Demo
+                </a>
+                <a
+                  href="https://github.com/ucoi/ai-code-review-agent"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-all duration-300"
+                >
+                  <Github size={18} />
+                  View Code
+                </a>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
+                <CodeReviewExplorer />
               </div>
             </Reveal>
           </div>
