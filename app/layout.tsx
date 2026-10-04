@@ -29,10 +29,10 @@ export const metadata: Metadata = {
     siteName: 'Ahmed Hisham Portfolio',
     images: [
       {
-        url: '/agentshield-thumbnail.png',
+        url: '/og-image.png',
         width: 1200,
-        height: 900,
-        alt: 'AgentShield — Security Sandbox for AI Agents',
+        height: 630,
+        alt: 'Ahmed Hisham, Full-Stack Developer',
       },
     ],
   },
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ahmed Hisham | Full-Stack & AI Agent Security Developer',
     description: 'Full-Stack Developer specializing in React, Next.js, TypeScript, Python, and AI agent security / integration.',
-    images: ['/agentshield-thumbnail.png'],
+    images: ['/og-image.png'],
   },
 }
 
