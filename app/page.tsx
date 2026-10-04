@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { 
   Github, 
   Linkedin, 
@@ -342,20 +343,6 @@ export default function Home() {
             <a href="#projects" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Projects</a>
             <a href="#stack" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Stack</a>
             <a href="#contact" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Contact</a>
-            <a
-              href="/cv.pdf"
-              download="Ahmed_Hisham_CV.pdf"
-              className="text-muted hover:text-white transition-colors text-sm"
-            >
-              Resume
-            </a>
-            <a
-              href="/cv.pdf"
-              download="Ahmed_Hisham_CV.pdf"
-              className="text-muted hover:text-white transition-colors text-sm"
-            >
-              CV
-            </a>
             <a 
               href="https://github.com/ucoi" 
               target="_blank" 
@@ -418,6 +405,112 @@ export default function Home() {
       </section>
 
       <section id="projects" className="py-32 px-6 scroll-mt-28">
+        <div className="max-w-6xl mx-auto">
+          <Reveal>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono uppercase tracking-wider">
+                  Latest Project
+                </span>
+                <span className="text-accent text-sm font-mono uppercase tracking-wider">Featured Project</span>
+              </div>
+              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
+            </div>
+          </Reveal>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center mt-12">
+            <Reveal delay={100}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                AgentShield
+              </h2>
+              <p className="text-xl text-muted mb-6 leading-relaxed">
+                A Python runtime that lets an AI agent act on files and commands without being able to harm the host machine.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: Shield, label: 'Policy Check', desc: 'Resolves real file paths before any action' },
+                  { icon: Lock, label: 'Locked Container', desc: 'No network, read-only FS, CPU/mem/process/time limits' },
+                  { icon: FileSearch, label: 'Audit Log', desc: 'Every decision written for later review' },
+                  { icon: Check, label: '13-Attack Benchmark', desc: 'Policy only vs sandbox only vs both' },
+                ].map((feature, i) => (
+                  <div key={i} className="flex gap-3 p-4 bg-surface rounded-lg border border-border hover:border-accent/30 transition-colors">
+                    <feature.icon size={20} className="text-accent flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-medium text-sm">{feature.label}</div>
+                      <div className="text-xs text-muted">{feature.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
+                <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
+                  <Cpu size={16} className="text-accent" />
+                  <span>Security Design</span>
+                </div>
+                <div className="space-y-2.5 text-xs text-muted leading-relaxed">
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Defense in Stages:</strong> Started with a deliberately naive policy (5 of 6 attacks slipped through), then a hardened version (0 of 6), with every attack kept as a regression test.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">13-Attack Benchmark:</strong> Run across three setups — policy only, sandbox only, and both. Policy-only let 5 attacks through; the container stopped all 13.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">Documented Gap & Mitigation:</strong> Flagged an unresolved case — files an agent plants in a shared folder that fire later on the host. Added a snapshot/diff check that flags risky files, with its limits written down.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                    <span><strong className="text-white font-medium">42 tests passing.</strong> Prototype, tested against a scripted agent, not a real LLM.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2 mb-8">
+                {['Python', 'Docker', 'pytest'].map((tech) => (
+                  <span key={tech} className="px-3 py-1 text-sm bg-surface border border-border rounded-full text-muted">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="https://github.com/ucoi/agentshield"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/30 transition-colors"
+                >
+                  <Github size={18} />
+                  View Code
+                </a>
+                <span className="text-xs text-muted">Command-line project — no live demo</span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
+                <div className="border border-border rounded-2xl overflow-hidden glow">
+                  <Image
+                    src="/agentshield-thumbnail.png"
+                    alt="AgentShield — Security Sandbox for AI Agents"
+                    width={1200}
+                    height={900}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-32 px-6 scroll-mt-28 border-t border-border">
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="flex items-center gap-3 mb-4">
@@ -714,6 +807,10 @@ export default function Home() {
               { name: 'Vapi', icon: '🎙️' },
               { name: 'Vercel', icon: '▲' },
               { name: 'Git', icon: '📦' },
+              { name: 'Python', icon: '🐍' },
+              { name: 'Docker', icon: '🐳' },
+              { name: 'pytest', icon: '🧪' },
+              { name: 'AI Agent Security', icon: '🛡️' },
               { name: 'Figma', icon: '🎨' },
             ].map((tech, i) => (
               <Reveal key={tech.name} delay={i * 50}>

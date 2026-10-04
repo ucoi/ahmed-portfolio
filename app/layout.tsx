@@ -13,22 +13,32 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Ahmed Hisham | Full-Stack Developer',
-  description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI-integrated web applications.',
-  keywords: ['Full-Stack Developer', 'React', 'Next.js', 'TypeScript', 'AI Integration', 'Firebase'],
+  metadataBase: new URL('https://ahmedhisham.dev'),
+  title: 'Ahmed Hisham | Full-Stack & AI Agent Security Developer',
+  description: 'Full-Stack Developer specializing in React, Next.js, TypeScript, Python, and AI agent security / integration.',
+  keywords: ['Full-Stack Developer', 'React', 'Next.js', 'TypeScript', 'Python', 'AI Agent Security', 'AI Integration', 'Docker'],
   authors: [{ name: 'Ahmed Hisham' }],
   creator: 'Ahmed Hisham',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Ahmed Hisham | Full-Stack Developer',
-    description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI-integrated web applications.',
+    title: 'Ahmed Hisham | Full-Stack & AI Agent Security Developer',
+    description: 'Full-Stack Developer specializing in React, Next.js, TypeScript, Python, and AI agent security / integration.',
     siteName: 'Ahmed Hisham Portfolio',
+    images: [
+      {
+        url: '/agentshield-thumbnail.png',
+        width: 1200,
+        height: 900,
+        alt: 'AgentShield — Security Sandbox for AI Agents',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ahmed Hisham | Full-Stack Developer',
-    description: 'Junior Full-Stack Developer specializing in React, Next.js, TypeScript, and AI-integrated web applications.',
+    title: 'Ahmed Hisham | Full-Stack & AI Agent Security Developer',
+    description: 'Full-Stack Developer specializing in React, Next.js, TypeScript, Python, and AI agent security / integration.',
+    images: ['/agentshield-thumbnail.png'],
   },
 }
 
