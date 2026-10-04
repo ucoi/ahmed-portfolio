@@ -12,8 +12,10 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ahmed-portfolio-rouge-three.vercel.app'
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ahmedhisham.dev'),
+  metadataBase: new URL(SITE_URL),
   title: 'Ahmed Hisham | Full-Stack & AI Agent Security Developer',
   description: 'Full-Stack Developer specializing in React, Next.js, TypeScript, Python, and AI agent security / integration.',
   keywords: ['Full-Stack Developer', 'React', 'Next.js', 'TypeScript', 'Python', 'AI Agent Security', 'AI Integration', 'Docker'],
