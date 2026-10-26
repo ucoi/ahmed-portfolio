@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
-  --surface: #111111;
-  --border: #1f1f1f;
-  --muted: #71717a;
+  --background: #08080b;
+  --surface: #0f0f14;
+  --surface-2: #15151c;
+  --border: #22222b;
+  --muted: #8f8f9d;
   --accent: #22d3ee;
   --accent-dim: #0891b2;
+  --accent-2: #818cf8;
 }
 
 * {
@@ -24,15 +26,21 @@ html {
 
 body {
   background: var(--background);
-  color: #fafafa;
+  color: #f4f4f5;
   font-family: var(--font-inter), system-ui, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.25);
+  color: #ffffff;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -40,83 +48,170 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+  background: #26262f;
+  border: 3px solid var(--background);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: #3a3a46;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-6 md:px-8;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 font-mono text-[11px] tracking-wide text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-background hover:bg-accent/90;
+    box-shadow: 0 10px 40px -12px rgba(34, 211, 238, 0.55);
+  }
+
+  .btn-secondary {
+    @apply btn border border-border bg-surface/60 text-white hover:border-accent/40 hover:bg-surface;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%);
+  background: linear-gradient(115deg, #a5f3fc 0%, #22d3ee 42%, #818cf8 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .glow {
-  box-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
+  box-shadow: 0 0 60px -12px rgba(34, 211, 238, 0.35);
 }
 
-.animated-underline {
+/* Faint blueprint grid used behind the hero */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.mask-fade {
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 85%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 85%);
+}
+
+/* Subtle film grain overlay */
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+/* Gradient hairline that appears on hover */
+.card-glow {
   position: relative;
 }
 
-.animated-underline::after {
+.card-glow::after {
   content: '';
   position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--accent);
-  transition: width 0.3s ease;
-}
-
-.animated-underline:hover::after {
-  width: 100%;
-}
-
-.reveal {
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.55), rgba(129, 140, 248, 0.25) 45%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
 }
 
-.reveal.visible {
+.card-glow:hover::after {
   opacity: 1;
-  transform: translateY(0);
 }
 
-.waveform {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  height: 60px;
+.hover-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    background-color 0.35s ease;
 }
 
-.waveform-bar {
-  width: 4px;
-  background: linear-gradient(to top, var(--accent-dim), var(--accent));
-  border-radius: 2px;
-  animation: waveform 1.2s ease-in-out infinite;
+.hover-lift:hover {
+  transform: translateY(-3px);
 }
 
-.waveform-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
-.waveform-bar:nth-child(2) { height: 35px; animation-delay: 0.1s; }
-.waveform-bar:nth-child(3) { height: 50px; animation-delay: 0.2s; }
-.waveform-bar:nth-child(4) { height: 35px; animation-delay: 0.3s; }
-.waveform-bar:nth-child(5) { height: 20px; animation-delay: 0.4s; }
+/* Edge-faded strip for the tech marquee */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
 
-@keyframes waveform {
-  0%, 100% {
-    transform: scaleY(0.5);
-    opacity: 0.5;
+/* Cursor-following highlight for interactive cards */
+.spotlight {
+  position: relative;
+}
+
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    rgba(34, 211, 238, 0.1),
+    transparent 68%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #2a2a34;
+  border: none;
+  border-radius: 999px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3a3a46;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  50% {
-    transform: scaleY(1);
-    opacity: 1;
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

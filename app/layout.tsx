@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -13,6 +13,11 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ahmed-portfolio-rouge-three.vercel.app'
+
+export const viewport: Viewport = {
+  themeColor: '#08080b',
+  colorScheme: 'dark',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

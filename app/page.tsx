@@ -1,941 +1,619 @@
-'use client'
-
-import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { 
-  Github, 
-  Linkedin, 
-  Mail, 
-  ExternalLink, 
-  Code2,
-  Sparkles,
-  Mic,
-  Zap,
-  Database,
-  Terminal,
-  Globe,
-  ArrowRight,
-  Cpu,
+import {
+  ArrowUpRight,
   Check,
-  Star,
-  CalendarDays,
-  GitPullRequest,
-  Shield,
+  Code2,
+  Database,
+  ExternalLink,
   FileSearch,
-  Lock
+  GitPullRequest,
+  Github,
+  Globe,
+  Linkedin,
+  Lock,
+  Mail,
+  Mic,
+  Shield,
+  Sparkles,
+  Terminal,
+  Zap,
 } from 'lucide-react'
 
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+import { BackToTop } from '@/components/back-to-top'
+import { Contact } from '@/components/contact'
+import { CodeReviewExplorer, ReadyRoleExplorer } from '@/components/explorers'
+import { FeaturedProject } from '@/components/featured-project'
+import { Hero } from '@/components/hero'
+import { Nav } from '@/components/nav'
+import { Reveal } from '@/components/reveal'
+import { SectionHeading } from '@/components/section-heading'
+import { SpotlightCard } from '@/components/spotlight-card'
+import { TechMarquee } from '@/components/tech-marquee'
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    )
+const moreProjects = [
+  {
+    title: 'Fitness Tracker',
+    desc: "Full MERN stack fitness application with responsive UI and 10+ RESTful API endpoints. Bachelor's thesis project.",
+    stack: ['MongoDB', 'Express', 'React', 'Node.js'],
+    github: 'https://github.com/ucoi/THESIS',
+    demo: 'https://thesis-rust.vercel.app/',
+  },
+  {
+    title: 'NileFlix',
+    desc: 'Netflix-style streaming UI built with React. Four-person team project with Figma-to-code implementation.',
+    stack: ['React', 'CSS', 'Figma'],
+    github: 'https://github.com/ucoi/NileFlix-FrontEnd',
+    demo: null,
+  },
+  {
+    title: 'Weather App',
+    desc: 'Weather forecasting application with public API integration. Migrated from JavaScript to TypeScript.',
+    stack: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
+    github: 'https://github.com/ucoi/weatherApp',
+    demo: 'https://weather-app-bay-six-92.vercel.app/',
+  },
+]
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
+const stackGroups = [
+  {
+    label: 'Frontend',
+    items: [
+      { name: 'React', mark: 'RE' },
+      { name: 'Next.js', mark: 'NX' },
+      { name: 'TypeScript', mark: 'TS' },
+      { name: 'Tailwind CSS', mark: 'TW' },
+      { name: 'Figma', mark: 'FG' },
+    ],
+  },
+  {
+    label: 'Backend & data',
+    items: [
+      { name: 'Node.js', mark: 'NO' },
+      { name: 'Python', mark: 'PY' },
+      { name: 'MongoDB', mark: 'MO' },
+      { name: 'Firebase', mark: 'FB' },
+    ],
+  },
+  {
+    label: 'AI & infrastructure',
+    items: [
+      { name: 'Gemini AI', mark: 'GE' },
+      { name: 'Vapi', mark: 'VA' },
+      { name: 'Docker', mark: 'DO' },
+      { name: 'pytest', mark: 'PT' },
+      { name: 'Git', mark: 'GI' },
+      { name: 'Vercel', mark: 'VE' },
+    ],
+  },
+]
 
-    return () => observer.disconnect()
-  }, [])
-
-  return { ref, isVisible }
-}
-
-function ReadyRoleExplorer() {
-  const breakdown = [
-    {
-      title: 'Communication Skills',
-      score: 30,
-      feedback: 'The candidate interrupted the interviewer multiple times during the introduction and demonstrated a lack of basic interview etiquette.',
-    },
-    {
-      title: 'Technical Knowledge',
-      score: 0,
-      feedback: 'No technical questions were answered, and the candidate did not demonstrate knowledge of the required tech stack.',
-    },
-    {
-      title: 'Problem-Solving',
-      score: 0,
-      feedback: 'The candidate did not participate in problem-solving scenarios or demonstrate analytical thinking.',
-    },
-    {
-      title: 'Cultural & Role Fit',
-      score: 20,
-      feedback: 'The candidate was unprepared and unaware of the role and company context before the interview started.',
-    },
-    {
-      title: 'Confidence & Clarity',
-      score: 40,
-      feedback: 'The candidate asked direct questions clearly, but asking basic details about the position showed a lack of preparation.',
-    },
-  ]
-
+function Divider() {
   return (
-    <div className="relative bg-surface border border-border rounded-2xl p-6 glow overflow-hidden">
-      <div className="flex items-center justify-between pb-4 mb-6 border-b border-border/80">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500/80" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-          <div className="w-3 h-3 rounded-full bg-green-500/80" />
-          <span className="text-xs text-muted font-mono ml-2">ReadyRole Feedback Report</span>
-        </div>
-        <span className="text-xs font-mono text-accent">WEBSITE EXAMPLE</span>
-      </div>
-
-      <div className="mb-6">
-        <h4 className="text-xl font-semibold text-white">Feedback on the Web Developer Interview</h4>
-        <p className="mt-2 text-xs text-muted">
-          Example feedback report from the{' '}
-          <a
-            href="https://interview-agent-virid-seven.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:text-accent-dim transition-colors"
-          >
-            live ReadyRole website
-          </a>
-          .
-        </p>
-        <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-muted">
-          <span className="inline-flex items-center gap-1.5 text-accent">
-            <Star size={14} fill="currentColor" />
-            Overall Impression: <strong className="text-white">18/100</strong>
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <CalendarDays size={14} />
-            Sep 12, 2026 · 5:11 PM
-          </span>
-        </div>
-      </div>
-
-      <div className="space-y-5 max-h-[520px] overflow-y-auto pr-2">
-        <section>
-          <h5 className="text-sm font-semibold text-accent mb-2">Final Assessment</h5>
-          <p className="text-xs leading-relaxed text-muted">
-            The candidate showed a critical lack of preparation by failing to know what position and technology stack the interview pertained to. Interrupting the interviewer during the opening remarks further negatively impacted their professional impression. No technical capabilities or problem-solving skills were demonstrated.
-          </p>
-        </section>
-
-        <section>
-          <h5 className="text-sm font-semibold text-accent mb-3">Breakdown of Evaluation</h5>
-          <div className="space-y-4">
-            {breakdown.map((item, index) => (
-              <div key={item.title} className="border-l border-border pl-3">
-                <div className="flex items-center justify-between gap-3 mb-1">
-                  <span className="text-xs font-medium text-white">{index + 1}. {item.title}</span>
-                  <span className="text-xs font-mono text-accent">{item.score}/100</span>
-                </div>
-                <p className="text-xs leading-relaxed text-muted">{item.feedback}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <h5 className="text-sm font-semibold text-accent mb-2">Strengths</h5>
-          <ul className="list-disc pl-5 text-xs leading-relaxed text-muted">
-            <li>Asked direct questions to clarify the interview topic and technology stack.</li>
-          </ul>
-        </section>
-        <section>
-          <h5 className="text-sm font-semibold text-accent mb-2">Areas for Improvement</h5>
-          <ul className="list-disc pl-5 space-y-1 text-xs leading-relaxed text-muted">
-            <li>Research the job description, company, and required tech stack before attending.</li>
-            <li>Allow the interviewer to finish their introduction before asking questions.</li>
-            <li>Demonstrate readiness and enthusiasm for the position being discussed.</li>
-          </ul>
-        </section>
-        <div className="flex flex-wrap gap-3 pt-1">
-          <a
-            href="https://interview-agent-virid-seven.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-medium text-accent hover:text-accent-dim transition-colors"
-          >
-            Back to Dashboard →
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function CodeReviewExplorer() {
-  const findings = [
-    {
-      file: 'src/auth/session.ts',
-      title: 'Missing authorization check on session refresh',
-      severity: 'high',
-      category: 'security',
-      lines: '42–58',
-      snippet: 'const session = await refresh(token)\nreturn session // no role / owner check',
-    },
-    {
-      file: 'src/api/review.ts',
-      title: 'LLM JSON counts trusted without recomputation',
-      severity: 'medium',
-      category: 'correctness',
-      lines: '88–94',
-      snippet: 'return { findings, counts: model.counts }',
-    },
-    {
-      file: 'src/lib/extract.ts',
-      title: 'Git b/ prefix leaked into modified-file paths',
-      severity: 'low',
-      category: 'bug',
-      lines: '410–418',
-      snippet: 'stripPrefix(path, "a/") || stripPrefix(path, "b/")',
-    },
-  ]
-
-  const severityColor: Record<string, string> = {
-    high: 'text-red-400 bg-red-500/10 border-red-500/20',
-    medium: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-    low: 'text-accent bg-accent/10 border-accent/20',
-  }
-
-  return (
-    <div className="relative bg-surface border border-border rounded-2xl p-6 glow overflow-hidden">
-      <div className="flex items-center justify-between pb-4 mb-6 border-b border-border/80">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500/80" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-          <div className="w-3 h-3 rounded-full bg-green-500/80" />
-          <span className="text-xs text-muted font-mono ml-2">AI Code Review · findings</span>
-        </div>
-        <span className="text-xs font-mono text-accent">WEBSITE EXAMPLE</span>
-      </div>
-
-      <div className="mb-6">
-        <h4 className="text-xl font-semibold text-white">Review of owner/repo#128</h4>
-        <p className="mt-2 text-xs text-muted">
-          Example findings from the{' '}
-          <a
-            href="https://ai-code-review-agent-ten.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:text-accent-dim transition-colors"
-          >
-            live review agent
-          </a>
-          .
-        </p>
-        <div className="flex flex-wrap items-center gap-3 mt-4 text-xs">
-          <span className="px-2 py-1 rounded-md bg-surface border border-border font-mono text-white">
-            3 findings
-          </span>
-          <span className="px-2 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 font-mono">
-            1 high
-          </span>
-          <span className="px-2 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 font-mono">
-            1 medium
-          </span>
-          <span className="px-2 py-1 rounded-md bg-accent/10 border border-accent/20 text-accent font-mono">
-            1 low
-          </span>
-        </div>
-      </div>
-
-      <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2">
-        {findings.map((item) => (
-          <div key={item.title} className="border border-border rounded-xl p-4 bg-background/40">
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <div className="min-w-0">
-                <div className="text-xs font-mono text-muted truncate">{item.file}</div>
-                <div className="text-sm font-medium text-white mt-1">{item.title}</div>
-              </div>
-              <span className={`shrink-0 text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded border ${severityColor[item.severity]}`}>
-                {item.severity}
-              </span>
-            </div>
-            <div className="flex items-center gap-3 mb-3 text-[11px] text-muted font-mono">
-              <span>{item.category}</span>
-              <span>·</span>
-              <span>L{item.lines}</span>
-            </div>
-            <pre className="text-[11px] leading-relaxed font-mono text-muted bg-background border border-border rounded-lg p-3 overflow-x-auto">
-              {item.snippet}
-            </pre>
-          </div>
-        ))}
-        <div className="flex flex-wrap gap-3 pt-1">
-          <a
-            href="https://ai-code-review-agent-ten.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-medium text-accent hover:text-accent-dim transition-colors"
-          >
-            Open live demo →
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Reveal({ 
-  children, 
-  className = '', 
-  delay = 0 
-}: { 
-  children: React.ReactNode
-  className?: string
-  delay?: number 
-}) {
-  const { ref, isVisible } = useScrollReveal()
-  
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${className}`}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-        transitionDelay: `${delay}ms`,
-      }}
-    >
-      {children}
-    </div>
+    <div className="my-14 h-px bg-gradient-to-r from-transparent via-border to-transparent md:my-16" />
   )
 }
 
 export default function Home() {
-  const handleSmoothScroll = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const href = event.currentTarget.getAttribute('href')
-
-    if (!href || !href.startsWith('#')) {
-      return
-    }
-
-    const targetId = href.slice(1)
-    const target = document.getElementById(targetId)
-
-    if (!target) {
-      return
-    }
-
-    event.preventDefault()
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    window.history.pushState(null, '', href)
-  }
-
   return (
-    <main className="min-h-screen">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a 
-            href="#"
-            onClick={handleSmoothScroll}
-            className="text-xl font-bold gradient-text animate-fade-in"
-          >
-            AH
-          </a>
-          <div className="flex gap-8 items-center animate-fade-in">
-            <a href="#projects" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Projects</a>
-            <a href="#stack" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Stack</a>
-            <a href="#contact" onClick={handleSmoothScroll} className="text-muted hover:text-white transition-colors text-sm">Contact</a>
-            <a 
-              href="https://github.com/ucoi" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-muted hover:text-white transition-colors"
-            >
-              <Github size={18} />
-            </a>
-          </div>
-        </div>
-      </nav>
+    <main className="relative min-h-screen overflow-x-clip">
+      <a
+        href="#content"
+        className="sr-only rounded-md bg-accent px-4 py-2 font-medium text-background focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60]"
+      >
+        Skip to content
+      </a>
 
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-6">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent pointer-events-none" />
-        
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'linear-gradient(#22d3ee 1px, transparent 1px), linear-gradient(90deg, #22d3ee 1px, transparent 1px)',
-          backgroundSize: '60px 60px'
-        }} />
+      <div
+        aria-hidden
+        className="noise pointer-events-none fixed inset-0 z-[55] opacity-[0.025]"
+      />
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-border mb-8 animate-fade-in">
-            <Sparkles size={14} className="text-accent" />
-            <span className="text-sm text-muted">AI-Integrated Full-Stack Development</span>
-          </div>
+      <Nav />
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-slide-up">
-            I build intelligent<br />
-            <span className="gradient-text">web applications</span>
-          </h1>
+      <div id="content">
+        <Hero />
+        <TechMarquee />
 
-          <p className="text-xl md:text-2xl text-muted mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            Full-Stack Developer specializing in{' '}
-            <span className="text-white">React</span>,{' '}
-            <span className="text-white">Next.js</span>, and{' '}
-            <span className="text-white">AI integration</span>.
-            <br />
-            Creating voice-powered experiences and scalable applications.
-          </p>
+        <section id="projects" className="relative py-20 md:py-28">
+          <div className="container-page">
+            <Reveal>
+              <SectionHeading
+                index="01"
+                eyebrow="Selected work"
+                title="Featured projects"
+                description="Three projects that show how I think about AI, security and product — from architecture to deployment."
+              />
+            </Reveal>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <a
-              href="#projects"
-              onClick={handleSmoothScroll}
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-accent text-background font-semibold rounded-lg hover:bg-accent-dim transition-all duration-300 glow"
-            >
-              View My Work
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a
-              href="#contact"
-              onClick={handleSmoothScroll}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-all duration-300"
-            >
-              Get In Touch
-            </a>
-          </div>
-
-        </div>
-      </section>
-
-      <section id="projects" className="py-32 px-6 scroll-mt-28">
-        <div className="max-w-6xl mx-auto">
-          <Reveal>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono uppercase tracking-wider">
-                  Latest Project
-                </span>
-                <span className="text-accent text-sm font-mono uppercase tracking-wider">Featured Project</span>
-              </div>
-              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
-            </div>
-          </Reveal>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-center mt-12">
-            <Reveal delay={100}>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                AgentShield
-              </h2>
-              <p className="text-xl text-muted mb-6 leading-relaxed">
-                A Python runtime that lets an AI agent act on files and commands without being able to harm the host machine.
-              </p>
-
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {[
-                  { icon: Shield, label: 'Policy Check', desc: 'Resolves real file paths before any action' },
-                  { icon: Lock, label: 'Locked Container', desc: 'No network, read-only FS, CPU/mem/process/time limits' },
-                  { icon: FileSearch, label: 'Audit Log', desc: 'Every decision written for later review' },
-                  { icon: Check, label: '13-Attack Benchmark', desc: 'Policy only vs sandbox only vs both' },
-                ].map((feature, i) => (
-                  <div key={i} className="flex gap-3 p-4 bg-surface rounded-lg border border-border hover:border-accent/30 transition-colors">
-                    <feature.icon size={20} className="text-accent flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-medium text-sm">{feature.label}</div>
-                      <div className="text-xs text-muted">{feature.desc}</div>
+            <div className="mt-16 md:mt-20">
+              <FeaturedProject
+                index="01"
+                label="AI agent security"
+                title="AgentShield"
+                description="A Python runtime that lets an AI agent act on files and commands without being able to harm the host machine."
+                features={[
+                  {
+                    icon: Shield,
+                    label: 'Policy check',
+                    desc: 'Resolves real file paths before any action',
+                  },
+                  {
+                    icon: Lock,
+                    label: 'Locked container',
+                    desc: 'No network, read-only FS, CPU/mem/process/time limits',
+                  },
+                  {
+                    icon: FileSearch,
+                    label: 'Audit log',
+                    desc: 'Every decision written for later review',
+                  },
+                  {
+                    icon: Check,
+                    label: '13-attack benchmark',
+                    desc: 'Policy only vs sandbox only vs both',
+                  },
+                ]}
+                highlightsTitle="Security design"
+                highlights={[
+                  {
+                    title: 'Defense in stages.',
+                    body: 'Started with a deliberately naive policy (5 of 6 attacks slipped through), then a hardened version (0 of 6), with every attack kept as a regression test.',
+                  },
+                  {
+                    title: '13-attack benchmark.',
+                    body: 'Run across three setups — policy only, sandbox only, and both. Policy-only let 5 attacks through; the container stopped all 13.',
+                  },
+                  {
+                    title: 'Documented gap & mitigation.',
+                    body: 'Flagged an unresolved case — files an agent plants in a shared folder that fire later on the host. Added a snapshot/diff check that flags risky files, with its limits written down.',
+                  },
+                  {
+                    title: '42 tests passing.',
+                    body: 'Prototype, tested against a scripted agent, not a real LLM.',
+                  },
+                ]}
+                stack={['Python', 'Docker', 'pytest']}
+                stats={[
+                  { value: '13/13', label: 'attacks blocked' },
+                  { value: '42', label: 'tests passing' },
+                  { value: '0', label: 'host escapes' },
+                ]}
+                repo="https://github.com/ucoi/agentshield"
+                note="Command-line project — no live demo"
+                visual={
+                  <div className="relative">
+                    <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-accent/15 to-accent-2/10 blur-2xl" />
+                    <div className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-soft">
+                      <Image
+                        src="/agentshield-thumbnail.png"
+                        alt="AgentShield — security sandbox for AI agents"
+                        width={1200}
+                        height={900}
+                        className="h-auto w-full object-cover"
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
+                }
+              />
 
-              <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
-                <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
-                  <Cpu size={16} className="text-accent" />
-                  <span>Security Design</span>
-                </div>
-                <div className="space-y-2.5 text-xs text-muted leading-relaxed">
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Defense in Stages:</strong> Started with a deliberately naive policy (5 of 6 attacks slipped through), then a hardened version (0 of 6), with every attack kept as a regression test.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">13-Attack Benchmark:</strong> Run across three setups — policy only, sandbox only, and both. Policy-only let 5 attacks through; the container stopped all 13.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Documented Gap & Mitigation:</strong> Flagged an unresolved case — files an agent plants in a shared folder that fire later on the host. Added a snapshot/diff check that flags risky files, with its limits written down.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">42 tests passing.</strong> Prototype, tested against a scripted agent, not a real LLM.</span>
-                  </div>
-                </div>
-              </div>
+              <Divider />
 
-              <div className="flex flex-wrap gap-2 mb-8">
-                {['Python', 'Docker', 'pytest'].map((tech) => (
-                  <span key={tech} className="px-3 py-1 text-sm bg-surface border border-border rounded-full text-muted">
-                    {tech}
-                  </span>
-                ))}
-              </div>
+              <FeaturedProject
+                index="02"
+                label="Voice AI product"
+                title="ReadyRole"
+                description="AI-powered voice interview platform that conducts mock job interviews through real-time conversation. Practice interviews, get instant feedback, and improve your communication skills."
+                features={[
+                  {
+                    icon: Mic,
+                    label: 'Live voice conversation',
+                    desc: 'Real-time AI interview via Vapi SDK',
+                  },
+                  {
+                    icon: Sparkles,
+                    label: 'Dynamic questions',
+                    desc: 'Tailored questions generated via Gemini AI',
+                  },
+                  {
+                    icon: Database,
+                    label: 'Firebase auth',
+                    desc: 'Secure authentication with the Admin SDK',
+                  },
+                  {
+                    icon: Zap,
+                    label: 'AI feedback engine',
+                    desc: 'Instant scoring across 5 categories',
+                  },
+                ]}
+                highlightsTitle="Key architecture decisions"
+                highlights={[
+                  {
+                    title: 'Sub-500ms voice pipeline.',
+                    body: 'Integrated Vapi WebSockets directly to enable natural interruptions and instant response times.',
+                  },
+                  {
+                    title: 'Structured Gemini evaluation.',
+                    body: 'Used the Vercel AI SDK with strict Zod schema validation to guarantee structured 5-category scoring.',
+                  },
+                  {
+                    title: 'Secure server-side auth.',
+                    body: 'Combined Firebase Client with the Admin SDK in Next.js Server Actions to protect interview data and API tokens.',
+                  },
+                ]}
+                stack={[
+                  'Next.js',
+                  'TypeScript',
+                  'Firebase',
+                  'Vapi',
+                  'Gemini AI',
+                  'Vercel AI SDK',
+                  'Zod',
+                ]}
+                stats={[
+                  { value: '<500ms', label: 'voice round-trip' },
+                  { value: '5', label: 'scoring categories' },
+                  { value: '100%', label: 'schema-validated' },
+                ]}
+                demo="https://interview-agent-virid-seven.vercel.app/"
+                repo="https://github.com/ucoi/Interview_Agent"
+                visual={<ReadyRoleExplorer />}
+                reversed
+              />
 
-              <div className="flex flex-wrap items-center gap-4">
-                <a
-                  href="https://github.com/ucoi/agentshield"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/30 transition-colors"
-                >
-                  <Github size={18} />
-                  View Code
-                </a>
-                <span className="text-xs text-muted">Command-line project — no live demo</span>
-              </div>
-            </Reveal>
+              <Divider />
 
-            <Reveal delay={200}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
-                <div className="border border-border rounded-2xl overflow-hidden glow">
-                  <Image
-                    src="/agentshield-thumbnail.png"
-                    alt="AgentShield — Security Sandbox for AI Agents"
-                    width={1200}
-                    height={900}
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-32 px-6 scroll-mt-28 border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          <Reveal>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
-              <span className="text-accent text-sm font-mono uppercase tracking-wider">Featured Project</span>
-              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
+              <FeaturedProject
+                index="03"
+                label="Developer tooling"
+                title="AI Code Review Agent"
+                description="Paste a GitHub PR URL and get a structured review: unified diffs are parsed into hunks, sent to an LLM with prompt-injection defense, then validated with Zod before anything reaches the UI."
+                features={[
+                  {
+                    icon: GitPullRequest,
+                    label: 'GitHub PR parsing',
+                    desc: 'Fetches unified diffs via the GitHub REST API',
+                  },
+                  {
+                    icon: Shield,
+                    label: 'Injection-safe prompts',
+                    desc: 'Wraps diff content as untrusted data in delimiters',
+                  },
+                  {
+                    icon: FileSearch,
+                    label: 'Zod validation + repair',
+                    desc: 'Strict schema with a one-pass JSON repair retry',
+                  },
+                  {
+                    icon: Lock,
+                    label: 'Secure server-side keys',
+                    desc: 'The LLM API key never reaches the client',
+                  },
+                ]}
+                highlightsTitle="Pipeline architecture"
+                highlights={[
+                  {
+                    title: 'Diff → chunks.',
+                    body: 'Parses unified diffs, skips lockfiles/minified/binary files, and strips git a/ b/ prefixes correctly.',
+                  },
+                  {
+                    title: 'Prompt injection defense.',
+                    body: 'Wraps the diff in explicit delimiters and instructs the LLM to ignore embedded instructions in code.',
+                  },
+                  {
+                    title: 'Validated JSON output.',
+                    body: 'Results validated against Zod with one repair attempt; counts are recomputed server-side, not trusted from the model.',
+                  },
+                ]}
+                stack={[
+                  'Next.js 16',
+                  'TypeScript',
+                  'React',
+                  'Tailwind',
+                  'Zod',
+                  'Vitest',
+                  'GitHub API',
+                  'LLM API',
+                  'Vercel',
+                ]}
+                stats={[
+                  { value: '3', label: 'severity levels' },
+                  { value: '1-pass', label: 'JSON repair retry' },
+                  { value: '0', label: 'keys client-side' },
+                ]}
+                demo="https://ai-code-review-agent-ten.vercel.app/"
+                repo="https://github.com/ucoi/ai-code-review-agent"
+                visual={<CodeReviewExplorer />}
+              />
             </div>
-          </Reveal>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center mt-12">
-            <Reveal delay={100}>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                ReadyRole
-              </h2>
-              <p className="text-xl text-muted mb-6 leading-relaxed">
-                AI-powered voice interview platform that conducts mock job interviews through real-time conversation. 
-                Practice interviews, get instant feedback, and improve your communication skills.
-              </p>
-
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {[
-                  { icon: Mic, label: 'Live Voice Conversation', desc: 'Real-time AI interview via Vapi SDK' },
-                  { icon: Sparkles, label: 'Dynamic Question Generation', desc: 'Tailored questions via Gemini AI' },
-                  { icon: Database, label: 'Firebase Authentication', desc: 'Secure auth with Admin SDK' },
-                  { icon: Zap, label: 'AI Feedback Engine', desc: 'Instant scoring across 5 categories' },
-                ].map((feature, i) => (
-                  <div key={i} className="flex gap-3 p-4 bg-surface rounded-lg border border-border hover:border-accent/30 transition-colors">
-                    <feature.icon size={20} className="text-accent flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-medium text-sm">{feature.label}</div>
-                      <div className="text-xs text-muted">{feature.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
-                <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
-                  <Cpu size={16} className="text-accent" />
-                  <span>Key Architecture Decisions</span>
-                </div>
-                <div className="space-y-2.5 text-xs text-muted leading-relaxed">
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Sub-500ms Voice Pipeline:</strong> Integrated Vapi WebSockets directly to enable natural interruptions and instant response times.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Structured Gemini AI Evaluation:</strong> Used Vercel AI SDK with strict Zod schema validation to guarantee 100% structured 5-category scoring.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Secure Server-Side Auth:</strong> Combined Firebase Client with Admin SDK on Next.js Server Actions to protect interview data and API tokens.</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-8">
-                {['Next.js', 'TypeScript', 'Firebase', 'Vapi', 'Gemini AI', 'Vercel AI SDK', 'Zod'].map((tech) => (
-                  <span key={tech} className="px-3 py-1 text-sm bg-surface border border-border rounded-full text-muted">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                <a
-                  href="https://interview-agent-virid-seven.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-background font-semibold rounded-lg hover:bg-accent-dim transition-colors"
-                >
-                  <Globe size={18} />
-                  Live Demo
-                </a>
-                <a
-                  href="https://github.com/ucoi/Interview_Agent"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-colors"
-                >
-                  <Github size={18} />
-                  View Code
-                </a>
-              </div>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
-                <ReadyRoleExplorer />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-32 px-6 scroll-mt-28 border-t border-border">
-        <div className="max-w-6xl mx-auto">
-          <Reveal>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
-              <span className="text-accent text-sm font-mono uppercase tracking-wider">Featured Project</span>
-              <div className="h-px flex-1 bg-gradient-to-l from-border to-transparent" />
-            </div>
-          </Reveal>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-center mt-12">
-            <Reveal delay={100}>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                AI Code Review Agent
-              </h2>
-              <p className="text-xl text-muted mb-6 leading-relaxed">
-                Paste a GitHub PR URL and get a structured review: unified diffs are parsed into
-                hunks, sent to an LLM with prompt-injection defense, then validated with Zod
-                before anything reaches the UI.
-              </p>
-
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {[
-                  { icon: GitPullRequest, label: 'GitHub PR Diff Parsing', desc: 'Fetches unified diffs via GitHub REST API' },
-                  { icon: Shield, label: 'Injection-Safe Prompting', desc: 'Wraps diff content as untrusted data in delimiters' },
-                  { icon: FileSearch, label: 'Zod Validation + Repair', desc: 'Strict schema with one-pass JSON repair retry' },
-                  { icon: Lock, label: 'Secure Server-Side Keys', desc: 'LLM API key never reaches the client' },
-                ].map((feature, i) => (
-                  <div key={i} className="flex gap-3 p-4 bg-surface rounded-lg border border-border hover:border-accent/30 transition-colors">
-                    <feature.icon size={20} className="text-accent flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-medium text-sm">{feature.label}</div>
-                      <div className="text-xs text-muted">{feature.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mb-8 p-5 bg-surface/80 border border-border rounded-xl">
-                <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-white">
-                  <Cpu size={16} className="text-accent" />
-                  <span>Pipeline Architecture</span>
-                </div>
-                <div className="space-y-2.5 text-xs text-muted leading-relaxed">
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Diff → Chunks:</strong> Parses unified diffs, skips lockfiles/minified/binary files, strips git a/ b/ prefixes correctly.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Prompt Injection Defense:</strong> Wraps diff in explicit delimiters and instructs the LLM to ignore embedded instructions in code.</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Check size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                    <span><strong className="text-white font-medium">Validated JSON Output:</strong> Results validated against Zod with one repair attempt; counts recomputed server-side, not trusted from the model.</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-8">
-                {['Next.js 16', 'TypeScript', 'React', 'Tailwind', 'Zod', 'Vitest', 'GitHub API', 'OpenAI-compatible LLM API', 'Vercel'].map((tech) => (
-                  <span key={tech} className="px-3 py-1 text-sm bg-surface border border-border rounded-full text-muted">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex gap-4">
-                <a
-                  href="https://ai-code-review-agent-ten.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-background font-semibold rounded-lg hover:bg-accent-dim transition-all duration-300 glow"
-                >
-                  <Globe size={18} />
-                  Live Demo
-                </a>
-                <a
-                  href="https://github.com/ucoi/ai-code-review-agent"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-all duration-300"
-                >
-                  <Github size={18} />
-                  View Code
-                </a>
-              </div>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-3xl opacity-50" />
-                <CodeReviewExplorer />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 px-6 bg-surface/50">
-        <div className="max-w-6xl mx-auto">
-          <Reveal>
-            <h3 className="text-3xl font-bold mb-12 text-center">
-              More Projects
-            </h3>
-          </Reveal>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: 'Fitness Tracker',
-                desc: 'Full MERN stack fitness application with responsive UI and 10+ RESTful API endpoints. Bachelor\'s thesis project.',
-                stack: ['MongoDB', 'Express', 'React', 'Node.js'],
-                github: 'https://github.com/ucoi/THESIS',
-                demo: 'https://thesis-rust.vercel.app/',
-              },
-              {
-                title: 'NileFlix',
-                desc: 'Netflix-style streaming UI built with React. 4-person team project with Figma-to-code implementation.',
-                stack: ['React', 'CSS', 'Figma'],
-                github: 'https://github.com/ucoi/NileFlix-FrontEnd',
-                demo: null,
-              },
-              {
-                title: 'Weather App',
-                desc: 'Weather forecasting application with public API integration. Migrated from JavaScript to TypeScript.',
-                stack: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
-                github: 'https://github.com/ucoi/weatherApp',
-                demo: 'https://weather-app-bay-six-92.vercel.app/',
-              },
-            ].map((project, i) => (
-              <Reveal key={project.title} delay={i * 100}>
-                <div className="flex flex-col justify-between h-full p-6 bg-background border border-border rounded-xl hover:border-accent/30 transition-all duration-300">
+            <div className="mt-28">
+              <Reveal>
+                <div className="flex items-end justify-between gap-6">
                   <div>
-                    <div className="flex justify-between items-start mb-4">
-                      <Code2 size={24} className="text-accent" />
+                    <div className="flex items-center gap-3">
+                      <span className="h-px w-8 bg-border" />
+                      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
+                        Also built
+                      </span>
                     </div>
-                    <h4 className="text-lg font-semibold mb-2">{project.title}</h4>
-                    <p className="text-sm text-muted mb-4 leading-relaxed">{project.desc}</p>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.stack.map((tech) => (
-                        <span key={tech} className="text-xs px-2 py-1 bg-surface border border-border rounded text-muted">
-                          {tech}
+                    <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                      More projects
+                    </h3>
+                  </div>
+                  <a
+                    href="https://github.com/ucoi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden items-center gap-1.5 text-sm text-muted transition-colors hover:text-white sm:inline-flex"
+                  >
+                    All repos
+                    <ArrowUpRight size={15} />
+                  </a>
+                </div>
+              </Reveal>
+
+              <div className="mt-8 grid gap-5 md:grid-cols-3">
+                {moreProjects.map((project, index) => (
+                  <Reveal key={project.title} delay={index * 100} className="h-full">
+                    <SpotlightCard className="card-glow hover-lift group relative flex h-full flex-col rounded-2xl border border-border bg-surface/40 p-6">
+                      <div className="flex items-start justify-between">
+                        <span className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-background text-accent">
+                          <Code2 size={18} />
                         </span>
+                        <ArrowUpRight
+                          size={18}
+                          className="text-muted/40 transition-all duration-300 group-hover:text-accent"
+                        />
+                      </div>
+
+                      <h4 className="mt-5 text-lg font-semibold text-white">
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="after:absolute after:inset-0 after:rounded-2xl focus-visible:underline focus-visible:outline-none"
+                        >
+                          {project.title}
+                        </a>
+                      </h4>
+                      <p className="mt-2 text-sm leading-relaxed text-muted">
+                        {project.desc}
+                      </p>
+
+                      <div className="mt-5 flex flex-wrap gap-1.5">
+                        {project.stack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-md border border-border bg-background px-2 py-0.5 font-mono text-[10px] text-muted"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="relative z-10 mt-auto flex items-center gap-4 border-t border-border/70 pt-5 text-xs">
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-medium text-muted transition-colors hover:text-white"
+                        >
+                          <Github size={14} />
+                          Code
+                        </a>
+                        {project.demo && (
+                          <a
+                            href={project.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-auto inline-flex items-center gap-1.5 font-medium text-accent transition-colors hover:text-white"
+                          >
+                            <Globe size={14} />
+                            Live demo
+                            <ExternalLink size={11} />
+                          </a>
+                        )}
+                      </div>
+                    </SpotlightCard>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="stack"
+          className="border-t border-border/60 bg-surface/20 py-20 md:py-28"
+        >
+          <div className="container-page">
+            <Reveal>
+              <SectionHeading
+                index="02"
+                eyebrow="Toolkit"
+                title="Tools I reach for"
+                description="The technologies I use to ship modern web applications, secure runtimes and AI-powered products."
+              />
+            </Reveal>
+
+            <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+              {stackGroups.map((group, groupIndex) => (
+                <Reveal key={group.label} delay={groupIndex * 100}>
+                  <div>
+                    <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                      {group.label}
+                    </div>
+                    <div className="grid gap-2">
+                      {group.items.map((item) => (
+                        <div
+                          key={item.name}
+                          className="group flex items-center gap-3 rounded-xl border border-border bg-surface/40 px-3.5 py-3 transition-colors hover:border-accent/25 hover:bg-surface"
+                        >
+                          <span className="grid h-8 w-8 place-items-center rounded-lg border border-border bg-background font-mono text-[10px] tracking-wide text-accent">
+                            {item.mark}
+                          </span>
+                          <span className="text-sm text-white/85">
+                            {item.name}
+                          </span>
+                        </div>
                       ))}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 pt-4 border-t border-border">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-white transition-colors"
-                    >
-                      <Github size={14} />
-                      Code
-                    </a>
-                    {project.demo && (
-                      <a
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent-dim transition-colors ml-auto"
-                      >
-                        <Globe size={14} />
-                        Live Demo
-                        <ExternalLink size={12} />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="stack" className="py-32 px-6 scroll-mt-28">
-        <div className="max-w-4xl mx-auto">
-          <Reveal>
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold mb-4">Stack I Work With</h3>
-              <p className="text-muted">Tools and technologies I use to build modern web applications</p>
+                </Reveal>
+              ))}
             </div>
-          </Reveal>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { name: 'React', icon: '⚛️' },
-              { name: 'Next.js', icon: '▲' },
-              { name: 'TypeScript', icon: 'TS' },
-              { name: 'Node.js', icon: '⬢' },
-              { name: 'MongoDB', icon: '🍃' },
-              { name: 'Firebase', icon: '🔥' },
-              { name: 'Tailwind CSS', icon: '🌊' },
-              { name: 'Gemini AI', icon: '✨' },
-              { name: 'Vapi', icon: '🎙️' },
-              { name: 'Vercel', icon: '▲' },
-              { name: 'Git', icon: '📦' },
-              { name: 'Python', icon: '🐍' },
-              { name: 'Docker', icon: '🐳' },
-              { name: 'pytest', icon: '🧪' },
-              { name: 'AI Agent Security', icon: '🛡️' },
-              { name: 'Figma', icon: '🎨' },
-            ].map((tech, i) => (
-              <Reveal key={tech.name} delay={i * 50}>
-                <div className="flex flex-col items-center justify-center p-6 bg-surface border border-border rounded-xl hover:border-accent/30 transition-colors">
-                  <span className="text-2xl mb-2">{tech.icon}</span>
-                  <span className="text-sm font-medium">{tech.name}</span>
-                </div>
-              </Reveal>
-            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-32 px-6 bg-surface/50">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+        <section
+          id="about"
+          className="border-t border-border/60 py-20 md:py-28"
+        >
+          <div className="container-page">
             <Reveal>
-              <h3 className="text-3xl font-bold mb-6">About Me</h3>
-              <div className="space-y-4 text-muted leading-relaxed">
-                <p>
-                  I&apos;m a Junior Full-Stack Developer and Computer Science Engineering graduate from the University of Debrecen,
-                  Hungary. Stipendium Hungaricum Scholar.
-                </p>
-                <p>
-                  I specialize in building React and Next.js applications with modern backend technologies. 
-                  Recently, I&apos;ve been focusing on AI integration — building applications that leverage voice AI,
-                  LLMs, and intelligent automation.
-                </p>
-                <p>
-                  I believe in writing clean, maintainable code and learning continuously. 
-                  Currently open to junior full-stack or AI-integrated development roles.
-                </p>
-              </div>
+              <SectionHeading
+                index="03"
+                eyebrow="About"
+                title="A bit about me"
+              />
             </Reveal>
 
-            <div className="space-y-4">
-              <Reveal delay={100}>
-                <div className="flex items-center gap-4 p-4 bg-background border border-border rounded-lg">
-                  <Terminal size={20} className="text-accent" />
-                  <div>
-                    <div className="font-medium text-sm">BSc Computer Science Engineering</div>
-                    <div className="text-xs text-muted">University of Debrecen • 2022–2026</div>
-                  </div>
+            <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-16">
+              <Reveal>
+                <div className="space-y-4 leading-relaxed text-muted">
+                  <p>
+                    I&apos;m a Junior Full-Stack Developer and Computer Science
+                    Engineering graduate from the University of Debrecen,
+                    Hungary. Stipendium Hungaricum Scholar.
+                  </p>
+                  <p>
+                    I specialize in building React and Next.js applications with
+                    modern backend technologies. Recently I&apos;ve been focusing
+                    on AI integration — building applications that leverage voice
+                    AI, LLMs and intelligent automation.
+                  </p>
+                  <p>
+                    I believe in writing clean, maintainable code and learning
+                    continuously. Currently open to junior full-stack or
+                    AI-integrated development roles.
+                  </p>
                 </div>
+
+                <a
+                  href="#contact"
+                  className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-white"
+                >
+                  Work with me
+                  <ArrowUpRight size={15} />
+                </a>
               </Reveal>
-              <Reveal delay={200}>
-                <div className="flex items-center gap-4 p-4 bg-background border border-border rounded-lg">
-                  <Zap size={20} className="text-accent" />
-                  <div>
-                    <div className="font-medium text-sm">Stipendium Hungaricum Scholar</div>
-                    <div className="text-xs text-muted">Competitive merit scholarship</div>
-                  </div>
-                </div>
-              </Reveal>
-              <Reveal delay={300}>
-                <div className="flex items-center gap-4 p-4 bg-background border border-border rounded-lg">
-                  <Globe size={20} className="text-accent" />
-                  <div>
-                    <div className="font-medium text-sm">Based in Hungary</div>
-                    <div className="text-xs text-muted">Open to remote-EU opportunities</div>
-                  </div>
-                </div>
-              </Reveal>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    icon: Terminal,
+                    title: 'BSc Computer Science Engineering',
+                    desc: 'University of Debrecen · 2022–2026',
+                  },
+                  {
+                    icon: Zap,
+                    title: 'Stipendium Hungaricum Scholar',
+                    desc: 'Competitive merit scholarship',
+                  },
+                  {
+                    icon: Globe,
+                    title: 'Based in Hungary',
+                    desc: 'Open to remote EU opportunities',
+                  },
+                  {
+                    icon: Sparkles,
+                    title: 'Currently building',
+                    desc: 'AgentShield — a secure runtime for AI agents',
+                  },
+                ].map((item, index) => (
+                  <Reveal key={item.title} delay={index * 90}>
+                    <div className="flex items-center gap-4 rounded-xl border border-border bg-surface/40 p-4 transition-colors hover:border-accent/25 hover:bg-surface">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-border bg-background text-accent">
+                        <item.icon size={18} />
+                      </span>
+                      <div>
+                        <div className="text-sm font-medium text-white">
+                          {item.title}
+                        </div>
+                        <div className="text-xs text-muted">{item.desc}</div>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="contact" className="py-32 px-6 scroll-mt-28">
-        <div className="max-w-3xl mx-auto text-center">
-          <Reveal>
-            <h3 className="text-4xl font-bold mb-6">Let&apos;s Connect</h3>
-            <p className="text-xl text-muted mb-12 max-w-xl mx-auto">
-              Looking for a junior full-stack developer? I&apos;m open to opportunities and interesting projects.
-            </p>
+        <Contact />
+      </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="mailto:ahmedhisham1928@gmail.com"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-background font-semibold rounded-lg hover:bg-accent-dim transition-colors glow"
-              >
-                <Mail size={18} />
-                Send Email
-              </a>
-              <a
-                href="https://github.com/ucoi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-colors"
-              >
-                <Github size={18} />
-                GitHub
-              </a>
-              <a
-                href="https://linkedin.com/in/ahmed-hisham-03542915b"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface border border-border text-white font-semibold rounded-lg hover:border-accent/50 transition-colors"
-              >
-                <Linkedin size={18} />
-                LinkedIn
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <footer className="py-8 px-6 border-t border-border">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-muted">
-            © 2026 Ahmed Hisham. Built with Next.js and Tailwind CSS.
+      <footer className="border-t border-border">
+        <div className="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="grid h-8 w-8 place-items-center rounded-lg border border-border bg-surface font-mono text-[11px] font-semibold text-accent">
+              AH
+            </span>
+            <span className="text-sm text-muted">
+              © 2026 Ahmed Hisham
+            </span>
           </div>
-          <div className="flex gap-6">
-            <a href="https://github.com/ucoi" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-white transition-colors">
-              <Github size={18} />
+
+          <nav
+            className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted"
+            aria-label="Footer"
+          >
+            <a href="#projects" className="transition-colors hover:text-white">
+              Projects
             </a>
-            <a href="https://linkedin.com/in/ahmed-hisham-03542915b" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-white transition-colors">
-              <Linkedin size={18} />
+            <a href="#stack" className="transition-colors hover:text-white">
+              Stack
             </a>
-            <a href="mailto:ahmedhisham1928@gmail.com" className="text-muted hover:text-white transition-colors">
-              <Mail size={18} />
+            <a href="#about" className="transition-colors hover:text-white">
+              About
+            </a>
+            <a href="#contact" className="transition-colors hover:text-white">
+              Contact
+            </a>
+          </nav>
+
+          <div className="flex items-center gap-1">
+            <a
+              href="https://github.com/ucoi"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-white"
+            >
+              <Github size={17} />
+            </a>
+            <a
+              href="https://linkedin.com/in/ahmed-hisham-03542915b"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-white"
+            >
+              <Linkedin size={17} />
+            </a>
+            <a
+              href="mailto:ahmedhisham1928@gmail.com"
+              aria-label="Email"
+              className="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-white"
+            >
+              <Mail size={17} />
             </a>
           </div>
         </div>
       </footer>
+
+      <BackToTop />
     </main>
   )
 }
